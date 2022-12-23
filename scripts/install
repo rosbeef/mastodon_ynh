@@ -26,6 +26,7 @@ ynh_abort_if_errors
 #=================================================
 
 domain=$YNH_APP_ARG_DOMAIN
+users_domain=$YNH_APP_ARG_USER_DOMAIN
 path_url="/"
 is_public=$YNH_APP_ARG_IS_PUBLIC
 language=$YNH_APP_ARG_LANGUAGE
@@ -52,6 +53,7 @@ ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 ynh_script_progression --message="Storing installation settings..." --weight=1
 
 ynh_app_setting_set --app=$app --key=domain --value=$domain
+ynh_app_setting_set --app=$app --key=users_domain --value=$users_domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
 ynh_app_setting_set --app=$app --key=language --value=$language
 ynh_app_setting_set --app=$app --key=admin --value=$admin
@@ -119,6 +121,12 @@ chown -R $app:www-data "$final_path"
 # NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Configuring NGINX web server..." --weight=1
+
+# add nginx users domain conf in case is differrent to server domain
+if [ $domain -!= $usrers_domain ]
+then
+	ynh_add_config --template="../conf/usersdomain_nginx.conf" --destination="/etc/nginx/conf.d/$users_domain.d/$app_users_domain.conf"
+fi
 
 # Create a dedicated NGINX config
 ynh_add_nginx_config
