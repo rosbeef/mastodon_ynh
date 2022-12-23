@@ -26,7 +26,7 @@ ynh_abort_if_errors
 #=================================================
 
 domain=$YNH_APP_ARG_DOMAIN
-users_domain=$YNH_APP_ARG_USER_DOMAIN
+users_domain=$YNH_APP_ARG_USERS_DOMAIN
 path_url="/"
 is_public=$YNH_APP_ARG_IS_PUBLIC
 language=$YNH_APP_ARG_LANGUAGE
