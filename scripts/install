@@ -123,7 +123,7 @@ chown -R $app:www-data "$final_path"
 ynh_script_progression --message="Configuring NGINX web server..." --weight=1
 
 # add nginx users domain conf in case is differrent to server domain
-if [ $domain != $usrers_domain ]
+if [ $domain != $users_domain ]
 then
 	ynh_add_config --template="../conf/usersdomain_nginx.conf" --destination="/etc/nginx/conf.d/$users_domain.d/$app_users_domain.conf"
 fi
