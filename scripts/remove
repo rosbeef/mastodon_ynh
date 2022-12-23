@@ -19,6 +19,7 @@ ynh_script_progression --message="Loading installation settings..." --weight=1
 app=$YNH_APP_INSTANCE_NAME
 
 domain=$(ynh_app_setting_get --app=$app --key=domain)
+users_domain=$(ynh_app_setting_get --app=$app --key=users_domain)
 db_name=$(ynh_app_setting_get --app=$app --key=db_name)
 db_user=$(ynh_app_setting_get --app=$app --key=db_user)
 final_path=$(ynh_app_setting_get --app=$app --key=final_path)
@@ -78,6 +79,11 @@ ynh_secure_remove --file="$final_path"
 # REMOVE NGINX CONFIGURATION
 #=================================================
 ynh_script_progression --message="Removing NGINX web server configuration..." --weight=1
+
+if [ $domain != $users_domain ]
+then
+	ynh_secure_remove --file="/etc/nginx/conf.d/$users_domain.d/$app_users_domain.conf"
+fi
 
 # Remove the dedicated NGINX config
 ynh_remove_nginx_config
