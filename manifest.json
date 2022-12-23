@@ -43,6 +43,10 @@
                 "type": "domain"
             },
             {
+                "name": "users_domain",
+                "type": "domain"
+            },
+            {
                 "name": "is_public",
                 "type": "boolean",
                 "default": true
