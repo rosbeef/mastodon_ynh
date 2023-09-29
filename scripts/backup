@@ -27,6 +27,10 @@ ynh_backup --src_path="$install_dir"
 
 ynh_backup --src_path="/etc/nginx/conf.d/$domain.d/$app.conf"
 
+if [[ "$domain" != "$local_domain" ]] && yunohost --output-as plain domain list | grep -q "^$local_domain$"; then
+  ynh_backup --src_path="/etc/nginx/conf.d/${local_domain}.d/${app}_well_known.conf"
+fi
+
 #=================================================
 # SPECIFIC BACKUP
 #=================================================

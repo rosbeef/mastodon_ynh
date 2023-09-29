@@ -130,6 +130,18 @@ ynh_script_progression --message="Adding system configurations related to $app..
 # Create a dedicated NGINX config using the conf/nginx.conf template
 ynh_add_nginx_config
 
+# Create .well-known redirection for access by federation, if Identity domain is different from Serving domain
+if [[ "$domain" != "$local_domain" ]] && yunohost --output-as plain domain list | grep -q "^$local_domain$"; then
+  ynh_add_config --template="nginx-users-local-domain.conf" --destination="/etc/nginx/conf.d/${local_domain}.d/${app}_well_known.conf"
+fi
+
+# Create .well-known redirection for access by federation, if Identity domain is different from Serving domain
+if [[ "$domain" != "$local_domain" ]] && yunohost --output-as plain domain list | grep -q "^$local_domain$"; then
+  ynh_permission_create --permission=well_known --url=$local_domain/.well-known/webfinger \
+                        --additional_urls $local_domain/.well-known/host-meta $local_domain/.well-known/nodeinfo \
+                        --label="Well known path redirects" --show_tile=false --allowed=visitors --auth_header=false
+fi
+
 # Create a dedicated systemd config
 ynh_add_systemd_config --service="$app-web" --template="mastodon-web.service"
 yunohost service add "$app-web" --description="$app web service"

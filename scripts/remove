@@ -45,6 +45,9 @@ ynh_remove_systemd_config --service="$app-streaming"
 # Remove the dedicated NGINX config
 ynh_remove_nginx_config
 
+# Remove well known path redirects if installed
+ynh_secure_remove --file="/etc/nginx/conf.d/${local_domain}.d/${app}_well_known.conf"
+
 # Remove a cron file
 ynh_secure_remove --file="/etc/cron.d/$app"
 
